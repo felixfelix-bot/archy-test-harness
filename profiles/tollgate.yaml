@@ -1,0 +1,26 @@
+# TollGate — proves the pinned tollgate-wrt version actually landed on a router.
+#
+# This is the gate for "the TollGate version bump works". It drives the same
+# JSON-RPC the product UI drives, then requires the node's claim and the
+# router's own package listing to AGREE — a success flag alone cannot fake that,
+# and "files new / version old" is the exact failure this guards against.
+#
+# Venue (all required; the tests SKIP, not silently pass, when unset):
+#   ARCHY_RPC_URL          running Archipelago node, e.g. http://10.99.99.2:5678
+#   ARCHY_RPC_PASSWORD     node admin password
+#   ARCHY_ROUTER_HOST      OpenWrt router the node can reach, e.g. 10.99.99.1
+#   ARCHY_ROUTER_PASSWORD  router root password
+#
+# Optional:
+#   ARCHY_TOLLGATE_VERSION  expected pin (default 0.6.0)
+#   ARCHY_MINT_URL          Cashu mint the provision should configure
+#   ARCHY_EVIDENCE_DIR      where JSON evidence lands (default results/tollgate)
+#
+# Run:
+#   ./scripts/run-profile.py --profile tollgate
+venue: hardware
+markers:
+  - not extended
+paths:
+  - tests/e2e/test_tollgate_version_pin.py
+timeout: 900
